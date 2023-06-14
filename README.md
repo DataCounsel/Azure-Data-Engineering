@@ -1,2 +1,2 @@
 # Azure data engineering
-On-premise data ingestion, transformation and reporting using Azure cloud, Databricks, Synapse and PowerBI
+Ingesting on-premise data, transforming it and reporting using Azure Data Factory, Databricks, Synapse and PowerBI
