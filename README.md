@@ -18,6 +18,11 @@ In this case, the on-premises database is SQL server and I have used the publicl
 
 ![image](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/aa45e31b-ee0c-40d9-b1da-fd5ca543de88)
 
+•	Azure Data Factory: Used for ingesting data from SQL Server and Storing it in Azure Data Lake using automated pipelines and setup to perform initial transformations on the incoming tables. The ADF resource was added to the access control(IAM) policies of the Data lake so that it is able to perform read, write functions. The tables were converted to parquet format and had the default snappy compression. The tables were stored in their corresponding folder structure which was automated using the pipeline. The diagram below show the pipeline which ingests the data from the on-premises server and carries out the tasks in the pipeline to produce the final transformed data in the gold container.
+
+![copy_all_tables_pipelineRun](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/0e674a62-817c-4ee4-b26a-3abc0f8efa65)
+
+
 •	Azure Data Lake Gen 2: Used for storage of data. Three containers have been created Bronze, Silver and Gold. The three layers represent the stages of business logic and requirements. The initial data ingested from SQL Server is transformed to parquet format as it provides significant performance, storage, and query optimization benefits in big data processing and analytics scenarios and stored in the bronze container.  The next level transformation is performed on the bronze data and stored in the silver container. The final transformation is performed on the silver layer and the data is stored in the gold container. The delta lake abstraction layer has been used on the parquet format files for storing the data in the gold and silver containers to allow for versioning. The data in the gold layer is ideal for reporting and analysis. It can be consumed by Azure Synapse Analytics which in turn can be connected to PowerBI for creating visualizations.
 
 ![ADLS_IAM_Roles](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/98eb428b-95d8-4c41-af53-b3d460723f0f)
