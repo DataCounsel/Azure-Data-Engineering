@@ -10,5 +10,36 @@ In this project the aim is to engineer the data present on the on-premises datab
 
 In this case, the on-premises database is SQL server and I have used the publicly available AdventureWorksLT2017 database for this purpose. The reason for using this is, it is lightweight and helps control the costs incurred and to showcase the process rather than the computing power. The size of the Dataset in real life situation would be much larger and the architecture used in this project would still be able to handle it very efficiently. The high-level architecture diagram is as below.
 
+#### Components and Data flow:
+
+•	SQL Server: On-premises Database which needs to be transformed. The SQL server was connected to Azure data factory using the self-hosted Integration runtime. The tables in the AdventureWorksLT2017 database was moved and transformed using Data factory into the Azure Data Lake storage. An user was created for the AdventureWorksLT2017 Database and the password was stored in the Key vault and was used by Data factory.
+
+![image](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/1f0db421-328d-43d5-a5ef-42fdb02b0f05)
+
+![image](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/aa45e31b-ee0c-40d9-b1da-fd5ca543de88)
+
+•	Azure Data Lake Gen 2: Used for storage of data. Three containers have been created Bronze, Silver and Gold. The three layers represent the stages of business logic and requirements. The initial data ingested from SQL Server is transformed to parquet format as it provides significant performance, storage, and query optimization benefits in big data processing and analytics scenarios and stored in the bronze container.  The next level transformation is performed on the bronze data and stored in the silver container. The final transformation is performed on the silver layer and the data is stored in the gold container. The delta lake abstraction layer has been used on the parquet format files for storing the data in the gold and silver containers to allow for versioning. The data in the gold layer is ideal for reporting and analysis. It can be consumed by Azure Synapse Analytics which in turn can be connected to PowerBI for creating visualizations.
+
+![ADLS_IAM_Roles](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/98eb428b-95d8-4c41-af53-b3d460723f0f)
+
+![bronze-silver-gold_containers](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/0c97afe5-f176-4797-8581-6ca5c7ef3470)
+
+![delta_lake_format_gold](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/8af32197-7d36-47d2-bae3-5bd4d95ad8ce)
+
+![gold_files](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/32008f97-614f-4880-ba1c-7a8c651054a7)
+
+•	Databricks: Databricks was the compute engine of choice as it provides the power of Apache spark without the requirement for setting up the environment and since it is cloud native it was well suited for the requirement of this project. It was convenient to access the storage using the credential passthrough feature as the email ID being used for this project was already added to the IAM policy of the data lake. The Data Factory could be connected by using an access token generated from Databricks and saving it as a secret in the Key vault and the storage was mounted using the ‘mount storage’ notebook.
+There were two levels of transformation performed, first transformation was performed on the data in the bronze container. The output from this layer was stored in the silver container. The second level was performed on the silver data and was stored in the gold container. The idea behind this is in a real business scenario there may be multiple levels of transformation and the final transformed data which is the data in the gold container is used for analytics and reporting. The data in the AdventureWorksLT table is already structured and is mostly readily usable but for the purpose of demonstration the ModifiedDate column has been converted from UTC timestamp to the YYYY-MM-DD format in the bronze to silver transformation and In the silver to gold transformation step, the column names have been changed from two words joined together and each starting with a capital letter to being separated by an ‘_’.
+
+
+•	Azure Synapse Analytics: This was chosen as it integrates data warehousing, big data, and data integration capabilities into a single platform. It is built on a massively parallel processing architecture and an extremely robust analytics tool which shares many functionalities with Azure Data factory. It makes setting up a database and enables querying it in a very short span of time. Costs can be optimized as it supports on-demand provisioning and automatic pause and resume capabilities. It can be easily integrated with the Azure data lake and other Azure services.
+
+
+![synapse1](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/5c20a560-fb69-4f52-b522-2f1778be8336)
+
+![synapse2](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/1e7c897e-9445-4797-a54a-63fa6056dc3a)
+
+![synapse3](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/4a2fb43a-258f-4ee6-92a7-d64c9c53a053)
+
 
 
