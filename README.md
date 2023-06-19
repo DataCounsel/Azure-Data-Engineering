@@ -1,4 +1,4 @@
-# Data engineering using Azure and Databricks
+# Data flow from on-premises to Delta Lake storage for analytics and visualization
 
 #### <ins>Project Objective</ins>
 Ingesting on-premise data and transforming it using Azure Data Factory, Databricks and analysing and reporting using Synapse and PowerBI
