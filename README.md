@@ -36,9 +36,11 @@ In this case, the on-premises database is SQL server and I have used the publicl
 •	Databricks: Databricks was the compute engine of choice as it provides the power of Apache spark without the requirement for setting up the environment and since it is cloud native it was well suited for the requirement of this project. It was convenient to access the storage using the credential passthrough feature as the email ID being used for this project was already added to the IAM policy of the data lake. The Data Factory could be connected by using an access token generated from Databricks and saving it as a secret in the Key vault and the storage was mounted using the ‘mount storage’ notebook.
 There were two levels of transformation performed, first transformation was performed on the data in the bronze container. The output from this layer was stored in the silver container. The second level was performed on the silver data and was stored in the gold container. The idea behind this is in a real business scenario there may be multiple levels of transformation and the final transformed data which is the data in the gold container is used for analytics and reporting. The data in the AdventureWorksLT table is already structured and is mostly readily usable but for the purpose of demonstration the ModifiedDate column has been converted from UTC timestamp to the YYYY-MM-DD format in the bronze to silver transformation and In the silver to gold transformation step, the column names have been changed from two words joined together and each starting with a capital letter to being separated by an ‘_’.
 
-![Bronze_to_silver](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/f5a5fc63-2b8e-45cb-bb76-260fa164b873)
+![Bronze_to_silver](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/499a2584-aaa2-4f44-8135-4885b26825a4)
 
-![silver-to-gold](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/f28d23e5-b5fc-4e72-86b1-7962e8379ede)
+
+![silver-to-gold](https://github.com/DataCounsel/Azure-Data-Engineering/assets/71335870/9ce0517e-c12d-4877-a3b2-c770ec79ed1f)
+
 
 
 •	Azure Synapse Analytics: This was chosen as it integrates data warehousing, big data, and data integration capabilities into a single platform. It is built on a massively parallel processing architecture and an extremely robust analytics tool which shares many functionalities with Azure Data factory. It makes setting up a database and enables querying it in a very short span of time. Costs can be optimized as it supports on-demand provisioning and automatic pause and resume capabilities. It can be easily integrated with the Azure data lake and other Azure services.
